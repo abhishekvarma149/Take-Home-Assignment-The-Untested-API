@@ -53,4 +53,35 @@ describe('Task API', () => {
             expect(res.body.id).toEqual(task.id);
         });
     });
+    describe('PATCH /tasks/:id/assign', () => {
+        it('should assign a user to a task', async () => {
+            const task = taskService.create({ title: 'New Feature' });
+
+            const res = await request(app)
+                .patch(`/tasks/${task.id}/assign`)
+                .send({ assignee: 'Rajesh' });
+
+            expect(res.statusCode).toEqual(200);
+            expect(res.body.assignee).toEqual('Rajesh');
+        });
+
+        it('should return 400 if assignee is empty string', async () => {
+            const task = taskService.create({ title: 'Bad Validation' });
+
+            const res = await request(app)
+                .patch(`/tasks/${task.id}/assign`)
+                .send({ assignee: '   ' });
+
+            expect(res.statusCode).toEqual(400);
+            expect(res.body.error).toBeDefined();
+        });
+
+        it('should return 404 for non-existent task', async () => {
+            const res = await request(app)
+                .patch('/tasks/fake-id/assign')
+                .send({ assignee: 'Rajesh' });
+
+            expect(res.statusCode).toEqual(404);
+        });
+    });
 });
