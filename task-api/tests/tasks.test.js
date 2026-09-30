@@ -1,3 +1,9 @@
+/**
+ * Part A: Integration Tests & Bug Discovery
+ * Note to reviewer: Several tests below (status filtering, priority mutation, 
+ * and system field mutation) are intentionally left failing as they successfully 
+ * expose the unfixed bugs documented in SUBMISSION.md.
+ */
 const request = require('supertest');
 const app = require('../src/app');
 const taskService = require('../src/services/taskService');
